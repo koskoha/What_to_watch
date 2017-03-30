@@ -12,8 +12,8 @@
 		
 	<!-- Our code goes here!!! -->
 
-	<div class="container">
-		<div class="row">
+	<div class="container text-center">
+		<div class="row" id="user-avatar">
 			<div class="col-md-12">
 				<label for="yourMood">Please upload your pictures:</label>
 				<!-- Capturin photo from web cam -->
@@ -22,30 +22,28 @@
 						<video id="video">Video stream not available.</video>
 						<button id="startbutton">Take photo</button>
 					</div>
+					
 					<canvas id="canvas">
 				  	</canvas>
+				  	
 				  	<div class="output">
-				    	<img id="photo" alt="The screen capture will appear in this box.">
+						<img id="photo" alt="The screen capture will appear in this box.">
 					</div>
 				</div>
-
-
-
-
 			</div>
 		</div>
 
-		<div class="row">
+		<div class="row" id= "user-pictures">
 			<div class="col-md-12">
 				<label for="yourMood">Please upload your three favorite pictures:</label>
-				<input type='file' id="picture-uploader" onchange="getImage(this);" />	
+				<input type='file' id="picture-uploader" onchange="getImage(this);">	
 				<div id="img-block">
-					<!-- three images goes here -->
+					<!-- User images -->
 				</div>
 			</div>
 		</div>
 
-		<div class="row">
+		<div class="row" id="user-paragraph">
 			<div class="col-md-12">
 				<label for="yourMood">Please type a paragraph describing either your life, day, or current mood: </label>
 				<textarea class="form-control" rows="5" id="paragraph"></textarea>

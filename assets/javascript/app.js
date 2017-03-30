@@ -36,7 +36,7 @@ function genreFinder(){
   })
 };
 
-
+//Look into Success > Complete Ajax commands
 
 //Create Genre Array
 function createGenre(){
@@ -46,12 +46,13 @@ function createGenre(){
     "url": "https://api.themoviedb.org/3/genre/movie/list?language=en-US&api_key=4eea97057056c04b2e278ac4baa59a43",
     "method": "GET",
     "headers": {},
-    "data": "{}"
+    "data": "{}",
+    "success" : idKeyword() 
   }
 
   $.ajax(settings).done(function (response) {
     genreArray = response.genres;
-    genreFinder();
+    genreFinder()
   });
 }
 //Apply Genre to search query
@@ -63,8 +64,7 @@ function idKeyword(){
   var keywordURL;
   var settings;
 
-  for (i=0; i < keywordArray.length; i++){
-    (function(i) {
+  for (var i=0; i < keywordArray.length; i++){
       keywordURL = "https://api.themoviedb.org/3/search/keyword?api_key=4eea97057056c04b2e278ac4baa59a43&query=" + keywordArray[i] + "&page=1"
 
       //Create an AJAX request
@@ -76,38 +76,35 @@ function idKeyword(){
       //push to new array
       $.ajax(settings).done(function (response) {
         idArray.push(response.results[0].id);
-      });
-
-    })(i)
-
+    });
   }
+
+  $.when.apply(null, idArray).done(movieIdPull);
 }
 
-idKeyword();
 
 //Search for each ID
 function movieIdPull(){
-  var movieIdURL;
-  var settings;
+ 
+    var movieIdURL;
+    var settings;
 
-  for (i=0; i < keywordArray.length; i++){
+    for (var i=0; i < keywordArray.length; i++){
 
-    movieIdURL = "https://api.themoviedb.org/3/discover/movie?api_key=4eea97057056c04b2e278ac4baa59a43&language=en-US&sort_by=popularity.desc&page=1&vote_average.gte=6.5&with_genres=" + genreId + "&with_keywords=" + idArray[i]
+      movieIdURL = "https://api.themoviedb.org/3/discover/movie?api_key=4eea97057056c04b2e278ac4baa59a43&language=en-US&sort_by=popularity.desc&page=1&vote_average.gte=6.5&with_genres=" + genreId + "&with_keywords=" + idArray[i]
 
-    //Pull Three films from each query and push their Ids to a new array
-    settings = {
-      "url": movieIdURL,
+      //Pull Three films from each query and push their Ids to a new array
+      settings = {
+        "url": movieIdURL,
+      }
+
+      $.ajax(settings).done(function (response) {
+        console.log('movieIdURL', movieIdURL)
+        console.log('movieIdPull repsonse', response);
+      });
     }
-
-    $.ajax(settings).done(function (response) {
-      console.log('movieIdURL', movieIdURL)
-      console.log('movieIdPull repsonse', response);
-      movieArray = response;
-    });
-  }
+  
 }
-
-movieIdPull();
 //Duplicate new array
 
 //Search each film at random in array and push to HTML

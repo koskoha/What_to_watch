@@ -14,9 +14,19 @@ firebase.initializeApp(config);
 
 /*  ------------------------Code goes here---------------------------------------------*/
 
+// All necessary data for working with Indico API.
+// three images of user favorite things
 var threeImg = [];
+/*User photo from web cam.
+*******In order to get user photo need to start page on server. 
+********(Have no idea why browser doesn't want to give access to web-cam if you start index page localy)*/
+var avatar;
 
-function readURL(input) {
+// paragraph describing either user life, day, or current mood.
+var paragraph;
+
+// Get image fron user 
+function getImage(input) {
 	if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = addPicToPage;
@@ -24,6 +34,7 @@ function readURL(input) {
   	}
 }
 
+//Add user image to the page and push code to threeImg array  
 function addPicToPage(img){
 	threeImg.push(img.target.result);
 	var imgBlock = $('<div class="block">')
@@ -36,3 +47,16 @@ function addPicToPage(img){
 		$('#picture-uploader').prop("disabled", true);
 	}
 }
+
+
+//Get user input from paragraph element
+$('#submitParagraph').click(function(e){
+  e.preventDefault;
+  var $parElement = $('#paragraph');
+  paragraph = $parElement.val();
+  $parElement.val('We start working on your input');
+  $parElement.prop("disabled", true);
+})
+
+
+

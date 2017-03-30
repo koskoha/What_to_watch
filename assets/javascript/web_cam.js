@@ -1,4 +1,7 @@
 
+// All code from here and to the bottom for reading web-cam image.
+// ******Doent work on Firefox.********
+
 (function() {
   // The width and height of the captured photo. We will set the
   // width to the value defined here, but the height will be
@@ -67,12 +70,12 @@
         canvas.setAttribute('height', height);
         streaming = true;
       }
-    }, false);
+    }, true);
 
     startbutton.addEventListener('click', function(ev){
       takepicture();
       ev.preventDefault();
-    }, false);
+    }, true);
     
     clearphoto();
   }
@@ -104,6 +107,7 @@
     
       var data = canvas.toDataURL('image/png');
       photo.setAttribute('src', data);
+      avatar = data;
     } else {
       clearphoto();
     }

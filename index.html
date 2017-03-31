@@ -15,10 +15,18 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12 fieldStyle" id="nav-field">
-				<div id="p-name">What do you want to watch, <span id="user-name">###</span></div>
-				<div id="login-logout"><a id="loginLink"  data-toggle="modal" data-target=".bs-modal-sm">
-	                <span class="glyphicon glyphicon-log-in" ></span> Login</a>
-	            </div>
+				<div id="p-name" class="nav-font">What do you want to watch<span id="user-name"></span></div>
+				<div class="nav-font" id="login-logout">
+					<a  id="favorite">
+	                	<span class="glyphicon glyphicon-film"></span>  My watch list
+	                </a>
+					<a id="login-link"  data-toggle="modal" data-target=".bs-modal-sm">
+	                	<span class="glyphicon glyphicon-log-in" ></span> Login
+	                </a>
+	                <a  id="logout-link">
+	                	<span class="glyphicon glyphicon-log-out"></span> Log out
+	                </a>
+	            </div>	
 				 <!-- Login modal -->
 
 				<div class="modal fade bs-modal-sm" id="myModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
@@ -126,6 +134,14 @@
 	</div>
 
 	<div class="container text-center" id="main">
+		<div class="row " >
+			<div class="col-md-12 fieldStyle" id="fav-field">
+				
+			</div>
+			
+		</div>
+
+
 		<div class="row" id="user-avatar">
 			<div class="col-md-12 fieldStyle">
 				<label for="yourMood">Take you photo:</label>
@@ -171,6 +187,7 @@
 	<script src="https://www.gstatic.com/firebasejs/3.7.3/firebase.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src = "assets/javascript/auth.js"></script>
 	<script src="assets/javascript/app.js"></script>
 	<script src="assets/javascript/web_cam.js"></script>
 </body>

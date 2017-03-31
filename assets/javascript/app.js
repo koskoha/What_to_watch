@@ -47,6 +47,8 @@
       .width(150)
       .height(200);
       $('#img-block').append($imgSquare.append($image).append($remove));
+      $imgSquare.hide().fadeIn("slow");
+
     if (threeImg.length === 3) {
       $('#picture-uploader').prop("disabled", true);
     }

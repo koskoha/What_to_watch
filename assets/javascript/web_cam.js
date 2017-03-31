@@ -35,11 +35,11 @@
                            navigator.msGetUserMedia);
 
     navigator.getMedia(
-      {
-        video: true,
-        audio: false
-      },
-      function(stream) {
+      	{
+        	video: true,
+        	audio: false
+      	},
+    function(stream) {
         if (navigator.mozGetUserMedia) {
           video.mozSrcObject = stream;
         } else {
@@ -47,8 +47,8 @@
           video.src = vendorURL.createObjectURL(stream);
         }
         video.play();
-      },
-      function(err) {
+    },
+    function(err) {
         console.log("An error occured! " + err);
       }
     );
@@ -84,10 +84,6 @@
   // captured.
 
   function clearphoto() {
-    var context = canvas.getContext('2d');
-    context.fillStyle = "#AAA";
-    context.fillRect(0, 0, canvas.width, canvas.height);
-
     var data = canvas.toDataURL('image/png');
     photo.setAttribute('src', data);
   }

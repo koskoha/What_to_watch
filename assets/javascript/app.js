@@ -44,7 +44,7 @@
     var $remove =$('<a class ="del_img btn btn-primary btn-circle btn-xl" data-id ="'+imgId+'"><i class="glyphicon glyphicon-remove"></i></a>')
     var $image = $('<img>')
       $image.attr('src', img.target.result)
-      .width(150)
+      .width(200)
       .height(200);
       $('#img-block').append($imgSquare.append($image).append($remove));
       $imgSquare.hide().fadeIn("slow");

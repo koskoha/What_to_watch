@@ -24,12 +24,14 @@
 
 .camera {
   width: 340px;
-  display:inline-block;
+  display:block;
+  float:left;
 }
 
 .output {
   width: 340px;
-  display:inline-block;
+  display:block;
+  float: right;
 }
 
 
@@ -38,7 +40,7 @@
   position:relative;
   margin-left:auto;
   margin-right:auto;
-  bottom:32px;
+  bottom:40px;
   background-color: rgba(0, 150, 0, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.7);
   box-shadow: 0px 0px 1px 2px rgba(0, 0, 0, 0.2);
@@ -79,23 +81,12 @@
   position: relative;
 }
 
-/* #user-avatar{
-  background-color: #66ccff;
-  height: 280px;
-}
-
-#user-pictures{
-  background-color: #99ffcc;
-  height: 280px;
-}
-
-#user-paragraph{
-  background-color: #ffccff;
-  
-} */
-
 .hide{
 	display: none;
+}
+
+#nav-field{
+	height: 50px;
 }
 
 .fieldStyle{
@@ -104,7 +95,7 @@
 	-webkit-border-radius: 15px 15px 15px 15px;
 	border: 1px solid #e7a61a;
 	/*background-color: #6beeff;*/
-	height: 280px;
+	height: 300px;
 	margin: 17px;
 	background-image: url("../../assets/images/wood.png");
 	-webkit-box-shadow: 0px 0px 34px 2px rgba(0,0,0,0.76);
@@ -114,12 +105,59 @@
 
 #paragraph{
 	background-image: url("../../assets/images/sprinkles.png");
-	/*background-color: grey;*/
+    font-size: 25px;
 	border-radius: 15px 15px 15px 15px;
 	-moz-border-radius: 15px 15px 15px 15px;
 	-webkit-border-radius: 15px 15px 15px 15px;
+	fo
 }
 
 body{
+	font-family: 'Ek Mukta', sans-serif;
 	background-image: url("../../assets/images/sprinkles.png");
+}
+
+.fieldStyle label {
+	font-family: 'Ek Mukta', sans-serif;
+	font-size: 25px;
+}
+
+#submitParagraph{
+	margin-top: 10px;
+}
+
+.avatar-block{
+	width: 60%;
+    margin: auto;
+}
+
+#img-block{
+	margin: auto;
+    width: 60%;
+}
+
+#picture-uploader{
+	margin:auto;
+}
+
+#nav-field{
+	height: 50px;
+}
+
+#p-name{
+	float: left;
+}
+
+#login-logout{
+	float: right;
+}
+
+#nav-field{
+    font-family: 'Ek Mukta', sans-serif;
+    font-size: 20px;
+    padding: 10px 20px;
+}
+
+#main{
+	margin-bottom: 30px;
 }

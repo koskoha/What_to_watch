@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+	<title>What TO Watch</title>
+
+</head>
+<body>
+<div class="container">
+	<br>
+	<div class="row">
+  		<div class="col-xs-6 col-md-3">
+   		 	<a href="#" class="thumbnail">
+     	 	<img src="camera" alt="web-camera">
+   		 	</a>
+   		 </div>
+  	<div class="row">
+  		<div class="col-xs-6 col-md-3">
+    		<a href="#" class="thumbnail">
+      		<img src="photo" alt="png">
+    		</a>
+  		</div>
+	</div>
+	</div>
+
+<div class="camera"><button id="startbutton">Take Photo</button></div>
+
+<div class="progress">
+  <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+    <span class="sr-only">100% Complete</span>
+  </div>
+</div>
+
+	<div class="row" id= "user-pictures">
+			<div class="col-md-12 fieldStyle">
+				<label for="yourMood">Please upload your three favorite pictures:</label>
+				<input type='file' id="picture-uploader" onchange="getImage(this);">	
+				<div id="img-block">
+					<!-- User images -->
+				</div>
+			</div>
+		</div>
+ 
+<div class="progress">
+  <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+    <span class="sr-only">100% Complete</span>
+  </div>
+</div>
+  
+
+<div class="row" id="user-paragraph">
+			<div class="col-md-12 fieldStyle">
+				<label for="yourMood">Please type a paragraph describing either your life, day, or current mood: </label>
+				<textarea class="form-control" rows="5" id="paragraph"></textarea>
+				<button id="submitParagraph">Submit Paragraph</button>
+			</div>
+		</div>
+  
+<div class="progress">
+  <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+    <span class="sr-only">100% Complete</span>
+  </div>
+</div> 
+<div class="row">
+			<button class="btn btn-success btn-lg"> Get Recomended Movie</button>
+		</div>
+	
+</div>
+ 
+<script src="https://www.gstatic.com/firebasejs/3.7.3/firebase.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="assets/javascript/app.js"></script>
+	<script src="assets/javascript/web_cam.js"></script>
+
+</body>
+</html>

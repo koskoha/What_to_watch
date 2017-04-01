@@ -18,16 +18,22 @@
  /*  -----------------------TheMovieDB Code Here------------------------------*/
 //https://api.themoviedb.org/3/movie/76341?api_key={4eea97057056c04b2e278ac4baa59a43}
 //var list
-var genreArray = [];
-var idArray = [];
+//Create Genre Array
+var genreArray = [{ "id": 28, "name": "Action"}, { "id": 12, "name": "Adventure"}, {"id": 16,"name": "Animation"}, {"id": 35, "name": "Comedy"},{"id": 80,"name": "Crime"},{"id": 99,"name": "Documentary"},{"id": 18, "name": "Drama"},{"id": 10751,"name": "Family"},{"id": 14,"name": "Fantasy"},{"id": 36,"name": "History"},{"id": 27,"name": "Horror"},{"id": 10402,"name": "Music"},{"id": 9648,"name": "Mystery"},{"id": 10749,"name": "Romance"},{"id": 878,"name": "Science Fiction"},{"id": 10770,"name": "TV Movie"},{"id": 53,"name": "Thriller"},{"id": 10752,"name": "War"},{"id": 37,"name": "Western"}]
 var movieArray = [];
-var keywordArray = ["Basketball", "Cat", "Cars"]
+var searchingMovieArray = [];
+var keywordArray = ["Basketball", "Dog", "cats"]
 var genre = "Comedy"
 genre = genre.toLowerCase();
 var genreId = 0;
 
 //func list
 //Look into error later
+
+
+//Look into Success > Complete Ajax commands
+
+//Add genre to search query
 function genreFinder(){
   genreArray.forEach(function(nameG){
     if (genre === nameG.name.toLowerCase()){
@@ -35,83 +41,112 @@ function genreFinder(){
     }
   })
 };
+genreFinder();
 
-//Look into Success > Complete Ajax commands
-
-//Create Genre Array
-function createGenre(){
-  var settings = {
-    "async": true,
-    "crossDomain": true,
-    "url": "https://api.themoviedb.org/3/genre/movie/list?language=en-US&api_key=4eea97057056c04b2e278ac4baa59a43",
-    "method": "GET",
-    "headers": {},
-    "data": "{}",
-    "success" : idKeyword() 
-  }
-
-  $.ajax(settings).done(function (response) {
-    genreArray = response.genres;
-    genreFinder()
-  });
-}
-//Apply Genre to search query
-createGenre();
-
-
-//Pull IDs from keyword Array
+//Find keywords Id numbers
 function idKeyword(){
   var keywordURL;
   var settings;
 
   for (var i=0; i < keywordArray.length; i++){
       keywordURL = "https://api.themoviedb.org/3/search/keyword?api_key=4eea97057056c04b2e278ac4baa59a43&query=" + keywordArray[i] + "&page=1"
-
-      //Create an AJAX request
       settings = {
+        "async": true,
+        "crossDomain": true,
         "url": keywordURL,
+        "method": "GET",
+        "headers": {},
+        "data": "{}", 
         }
 
-      //pull first id number from array
-      //push to new array
       $.ajax(settings).done(function (response) {
-        idArray.push(response.results[0].id);
-    });
-  }
+        //pull first keyword id number from array
+        var thisKeywordId = response.results[0].id;
+        var movieIdURL;
+        var settings;
 
-  $.when.apply(null, idArray).done(movieIdPull);
+        //search for movies with proper keyword and genre
+        movieIdURL = "https://api.themoviedb.org/3/discover/movie?api_key=4eea97057056c04b2e278ac4baa59a43&language=en-US&sort_by=popularity.desc&page=1&vote_average.gte=6.5&with_genres=" + genreId + "&with_keywords=" + thisKeywordId
+          
+          settings = {
+            "url": movieIdURL,
+          }
+          //Pull films from each query and push their Ids to a new array
+          $.ajax(settings).done(function (response) {
+            console.log(response);
+            if (response.total_results > 2){
+              movieArray.push(response.results[0].id);
+              movieArray.push(response.results[1].id);
+              movieArray.push(response.results[2].id);
+            }
+            else if (response.total_results > 1){
+              movieArray.push(response.results[0].id);
+              movieArray.push(response.results[1].id);
+            }
+            else if (response.total_results > 0){
+              movieArray.push(response.results[0].id);
+            }
+            else{}
+          });
+        });
+      };
+    movieShuffle();
+    movieGetter();
+  }
+//Search for each ID
+idKeyword();
+
+var testArray = movieArray;
+function movieShuffle(){
+  for (var i = 0; i < movieArray.length; i++){
+    var movieNumber;
+
+    //Push randomized movie into searching array
+    movieNumber = movieArray[Math.floor(Math.random()*movieArray.length)];
+    searchingMovieArray.push(movieArray[movieNumber]);
+    //Remove added film from original array so duplicates dont occur
+    movieArray.splice(movieNumber, 1);
+  }
 }
 
 
-//Search for each ID
-function movieIdPull(){
- 
-    var movieIdURL;
+
+function movieGetter(){
+  for (var i = 0; i < movieArray.length; i++)
+    var movieURL = "https://api.themoviedb.org/3/movie/" + movieArray[i] + "?api_key=4eea97057056c04b2e278ac4baa59a43&language=en-US"
     var settings;
 
-    for (var i=0; i < keywordArray.length; i++){
-
-      movieIdURL = "https://api.themoviedb.org/3/discover/movie?api_key=4eea97057056c04b2e278ac4baa59a43&language=en-US&sort_by=popularity.desc&page=1&vote_average.gte=6.5&with_genres=" + genreId + "&with_keywords=" + idArray[i]
-
-      //Pull Three films from each query and push their Ids to a new array
-      settings = {
-        "url": movieIdURL,
-      }
-
-      $.ajax(settings).done(function (response) {
-        console.log('movieIdURL', movieIdURL)
-        console.log('movieIdPull repsonse', response);
-      });
+    settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": movieURL,
+    "method": "GET",
+    "headers": {},
+    "data": "{}", 
     }
-  
+
+    $.ajax(settings).done(function (response){
+      var thisPosterURL = "https://image.tmdb.org/t/p/w1280" + response.belongs_to_collection.poster_path;
+      var thisName = response.title;
+      var thisReleaseDate = response.release_date;
+      var thisRuntime = response.runtime;
+      var thisOverview = response.overview;
+      var thisIMDBId = reponse.imdb_id;
+
+
+      //Take data and push it to HTML and Firebase
+
+      //We can search the OMDB database as well if we want more details
+    });
+
 }
-//Duplicate new array
+  
 
-//Search each film at random in array and push to HTML
 
-//Remove each film from duplicate array each time you make a query
 
-//Stop when length of array is done
+
+
+
 
 
 

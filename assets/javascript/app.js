@@ -126,12 +126,12 @@ function movieGetter(){
     }
 
     $.ajax(settings).done(function (response){
-      var thisPosterURL = "https://image.tmdb.org/t/p/w1280" + response.belongs_to_collection.poster_path;
-      var thisName = response.title;
-      var thisReleaseDate = response.release_date;
-      var thisRuntime = response.runtime;
-      var thisOverview = response.overview;
-      var thisIMDBId = reponse.imdb_id;
+      var thisPosterURL[i] = "https://image.tmdb.org/t/p/w1280" + response.belongs_to_collection.poster_path;
+      var thisName[i] = response.title;
+      var thisReleaseDate[i] = response.release_date;
+      var thisRuntime[i] = response.runtime;
+      var thisOverview[i] = response.overview;
+      var thisIMDBId[i] = reponse.imdb_id;
 
 
       //Take data and push it to HTML and Firebase

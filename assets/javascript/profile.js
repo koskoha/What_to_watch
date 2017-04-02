@@ -118,7 +118,7 @@ function addMovieToFavField(movie){
 
 
 // Firebase listener for adding new movie
-database.ref('/users/').on("child_added", function(snapshot){
+database.ref('/users/'+firebase.auth().currentUser.uid).on("child_added", function(snapshot){
   console.log("listener for adding movie",snapshot.val());
   addMovieToFavField(snapshot.val());
 });

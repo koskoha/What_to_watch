@@ -72,7 +72,7 @@ $("#logout-link").on("click", function(){
 $('#favorite').click(function(){
 	var favField = $('#fav-field');
 	if (favField.is(':visible')) {
-		favField.fadeOut();
+		favField.slideUp();
 	}else
-		favField.fadeIn();
+		favField.slideDown();
 });

@@ -55,6 +55,7 @@ function authStateChangeListener(user){
 		}
 	}else{
 		//not login
+		$('#fav-field').html("");
 		$("#login-link").removeClass('hide');
 		$("#logout-link").addClass('hide');
 		$('#favorite').fadeOut();
@@ -69,10 +70,3 @@ $("#logout-link").on("click", function(){
 		});
 });
 
-$('#favorite').click(function(){
-	var favField = $('#fav-field');
-	if (favField.is(':visible')) {
-		favField.slideUp();
-	}else
-		favField.slideDown();
-});

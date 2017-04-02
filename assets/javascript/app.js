@@ -14,8 +14,10 @@
 
   var imgId = 0;
 
+
+
   // referense to DB
-  var database = firebase.database();
+
 
   // Get image fron user 
   function getImage(input) {
@@ -31,7 +33,7 @@
 
   	threeImg.push({id:imgId, img:img.target.result});
   	var $imgSquare = $('<div class="images"></div');
-  	var $remove =$('<a class ="del_img btn btn-primary btn-circle btn-xl" data-id ="'+imgId+'"><i class="glyphicon glyphicon-remove"></i></a>')
+  	var $remove =$('<a class ="del_img_but del_img btn btn-primary btn-circle btn-xl" data-id ="'+imgId+'"><i class="glyphicon glyphicon-remove"></i></a>')
   	var $image = $('<img>')
   	$image.attr('src', img.target.result)
   	.width(200)
@@ -65,69 +67,7 @@
   });
 
 
-  /*****************TEST MOVIES OBJECTS*****************/
-  var movies =[
-	  {
-	  	id: 100693,
-	  	poster_path:'',
-	  	name:"Terminator",
-	  	genres:["action", "comedi"],
-	  	overview:"this movie is about...",
-	  	runtime:79,
-	  	vote_average:6.9
-	  },
-	  {
-	  	id:1025487,
-	  	poster_path:'',
-	  	name:"Terminator",
-	  	genres:["action", "comedi"],
-	  	overview:"this movie is about...",
-	  	runtime:79,
-	  	vote_average:6.9
-	  }
-  ]
-
-
-  /****************************************/
-
-// Addin list of movies to the page
-function showSuggestions(){
-	var user = firebase.auth().currentUser;
-	if (user !== null){
-		return firebase.database().ref('/users/' + user.uid).once('value').then(function(snapshot) {
-		  console.log(snapshot.val());
-		});
-	}else{
-		console.log("Login first in order to see your saver sugested movies!");
-	}
-}
-// add mivie to DB on you account
-function addMovieToDb(movie){
-	var user = firebase.auth().currentUser;
-	if (user !== null) {
-		database.ref('/users/'+user.uid).child(movie.id).set(movie);
-	}else{
-		console.log("Login first in order to add movie to your profile!");
-	}
-}
-
-$('#addToDB').on("click",function(){
-	addMovieToDb(movies[0]);
-	addMovieToDb(movies[1]);
-})
-
-$('#sugestions').on('click', function(){
-	showSuggestions();
-})
-
-
-//Swiper initialization
-var swiper = new Swiper('.swiper-container', {
-        pagination: '.swiper-pagination',
-        slidesPerView: 'auto',
-        paginationClickable: true,
-        spaceBetween: 30
-    });
+  
 
 
 

@@ -1,4 +1,4 @@
-
+/*
 // All code from here and to the bottom for reading web-cam image.
 // ******Doent work on Firefox.********
 
@@ -112,4 +112,4 @@
   // Set up our event listener to run the startup process
   // once loading is complete.
   window.addEventListener('load', startup, false);
-})();
+})();*/

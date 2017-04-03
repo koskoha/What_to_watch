@@ -19,6 +19,7 @@
 
 
 var genre;
+var keywordArray = []
   // three images of user favorite things
   var threeImg = [];
   /*User photo from web cam.
@@ -89,8 +90,8 @@ var test = {
     else{
       return "tv movie"
     }
-
   }
+
   // Get image fron user 
   function getImage(input) {
     if (input.files && input.files[0]) {
@@ -106,7 +107,8 @@ var test = {
   
                 // single example
                 indico.facialFeatures("<IMAGE>")
-                    .then(response)
+                  //takes data from image and converts into a genre
+                    .done(genre = emoteGenre(response))
                     .catch(logError);
       }
   }
@@ -138,15 +140,16 @@ var test = {
       $('#picture-uploader').prop("disabled", false);
    
 
-      
-      var imagebatchInput = [
-          "<IMAGE>",
-          "<IMAGE>"
-            ];
-          indico.facialFeatures(imagebatchInput)
-              .then(response)
-              .catch(logError);
-
+      for (var i = 0; threeImg.length > i; i++){
+        $.post(
+          'https://apiv2.indico.io/imagerecognition',
+          JSON.stringify({
+            'api_key': "7757e7fda1d6a89efbd1cc07880cc78f",
+            'data': "<IMAGE>",
+            'threshold': 0.01
+          })
+        ).then(keywordArray.push(Object.keys(response)[0]);
+      }
       });
   }
   //Get user input from paragraph element
@@ -169,7 +172,8 @@ var test = {
     "Like seriously my life is bleak, I have been unemployed for almost a year."
         ];
         indico.emotion(batchInput)
-          .then(genre = emoteGenre(response))
+          //pushes all keywords to keyword array
+          .then(keywordArray.push(Object.keys(response)))
           .catch(logError);
 
   });90

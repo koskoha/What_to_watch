@@ -47,6 +47,7 @@ function authStateChangeListener(user){
 	//signin
 	if (user) {
 		//login
+		firebaseListeners();
 		$("#login-link").addClass('hide');
 		$("#logout-link").removeClass('hide');
 		$('#favorite').fadeIn();

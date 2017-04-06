@@ -1,90 +1,92 @@
+/*  ------------------------Code goes here---------------------------------------------*/
 
-  // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyA_fu2UaPSlieTOLsBfHF0RnqUYrJVS1WE",
-    authDomain: "what-to-watch-db8c3.firebaseapp.com",
-    databaseURL: "https://what-to-watch-db8c3.firebaseio.com",
-    storageBucket: "what-to-watch-db8c3.appspot.com",
-    messagingSenderId: "286455706703"
-  };
-  firebase.initializeApp(config);
+// All necessary data for working with Indico API.
+// three images of user favorite things
+var threeImg = [];
+/*User photo from web cam.
+ *******In order to get user photo need to start page on server. 
+ ********(Have no idea why browser doesn't want to give access to web-cam if you start index page localy)*/
+var avatar;
 
+// paragraph describing either user life, day, or current mood.
+var paragraph;
 
+var imgId = 0;
 
+var trigger = 5;
 
-  /*  ------------------------Code goes here---------------------------------------------*/
+// key words from image recognition
+var imagesKeywords = [];
 
- /*  -----------------------Indico API Code here------------------------------*/
+// Facial Emotion Recognition variable
+var facialKeyword;
+var facialKeywordObject;
 
+//paragraph emonions keyword 
+var paragraphKeyword;
+var paragraphKeywordObject;
+var sortedParagraphKeywordArray;
 
+var indicoAPIkey = "7757e7fda1d6a89efbd1cc07880cc78f";
 
+//Array of movie objects
+var genreArray = [{ "id": 28, "name": "Action"}, { "id": 12, "name": "Adventure"}, {"id": 16,"name": "Animation"}, {"id": 35, "name": "Comedy"},{"id": 80,"name": "Crime"},{"id": 99,"name": "Documentary"},{"id": 18, "name": "Drama"},{"id": 10751,"name": "Family"},{"id": 14,"name": "Fantasy"},{"id": 36,"name": "History"},{"id": 27,"name": "Horror"},{"id": 10402,"name": "Music"},{"id": 9648,"name": "Mystery"},{"id": 10749,"name": "Romance"},{"id": 878,"name": "Science Fiction"},{"id": 10770,"name": "TV Movie"},{"id": 53,"name": "Thriller"},{"id": 10752,"name": "War"},{"id": 37,"name": "Western"}]
+var movieArray = [];
+var searchingMovieArray = [];
+var keywordArray = [];
+var keywordIdArray = [];
+var genreId = 0;
 var genre;
-var keywordArray = []
-  // three images of user favorite things
-  var threeImg = [];
-  /*User photo from web cam.
-  *******In order to get user photo need to start page on server. 
-  ********(Have no idea why browser doesn't want to give access to web-cam if you start index page localy)*/
-  var avatar;
+var movieObjectArray = [];
+// referense to DB
 
-  // paragraph describing either user life, day, or current mood.
-  var paragraph;
 
-  var imgId = 0;
+//Converts emotion spectrum into a genre
 
-var test = {
-    'anger': 0.007581704296171665,
-    'joy': 0.07016665488481522,
-    'fear': 0.8000516295433044,
-    'sadness': 0.02512381225824356,
-    'surprise': 0.06534374748375202
-}
-
-  //Converts emotion spectrum into  a genre
   function emoteGenre(input){
-    if (input.anger >.5){
+    if (input.Angry >.3){
       return "war"
     }
-    if (input.joy > .5){
+    if (input.Happy > .3){
       return "animation"
     }
-    if (input.fear > .5){
+    if (input.Fear > .3){
       return "thriller"
     }
-    if (input.sadness > .5){
+    if (input.Sad > .3){
       return "comedy"
     }
-    if (input.surpirse > .5){
+    if (input.Surprise > .3){
       return "mystery"
     }
-    if (input.anger > .25 && input.surprise >.25 ){
+    if (input.Angry > .2 && input.Surprise >.2 ){
       return "crime"
     }
-    if (input.joy > .25 && input.surprise >.25 ){
+    if (input.Happy > .2 && input.Surprise >.2 ){
       return "action"
     }
-    if (input.fear > .25 && input.surprise >.25 ){
+    if (input.Fear > .2 && input.Surprise >.2 ){
       return "horror"
     }
-    if (input.sadness > .25 && input.surprise >.25 ){
+    if (input.Sad > .2 && input.Surprise >.2 ){
       return "fantasy"
     }
-    if (input.anger > .25 && input.joy >.25 ){
+    if (input.Angry > .2 && input.Happy >.2 ){
       return "adventure"
     }
-    if (input.anger > .25 && input.fear >.25 ){
+    if (input.Angry > .2 && input.Fear >.2 ){
       return "western"
     }
-    if (input.anger > .25 && input.joy >.25 ){
+    if (input.Angry > .2 && input.Happy >.2 ){
       return "adventure"
     }
-    if (input.joy > .25 && input.fear >.25 ){
+    if (input.Happy > .2 && input.Fear >.2 ){
       return "romance"
     }
-    if (input.sadness > .25 && input.fear >.25 ){
+    if (input.Sad > .2 && input.Fear >.2 ){
       return "drama"
     }
-    if (input.anger > .25 && input.sadness >.25 ){
+    if (input.Angry > .2 && input.Sad >.2 ){
       return "music"
     }
     else{
@@ -92,125 +94,138 @@ var test = {
     }
   }
 
-  // Get image fron user 
-  function getImage(input) {
+// Get image fron user 
+
+$('#getRecomendedMovies').prop("disabled", true);
+
+function getImage(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = addPicToPage;
         reader.readAsDataURL(input.files[0]);
-        
-        var indico = require('indico.io');
-            indico.apiKey =  '7757e7fda1d6a89efbd1cc07880cc78f';
+    }
+}
 
-            var response = function(res) { console.log(res); }
-            var logError = function(err) { console.log(err); }
-  
-                // single example
-                indico.facialFeatures("<IMAGE>")
-                  //takes data from image and converts into a genre
-                    .done(genre = emoteGenre(response))
-                    .catch(logError);
-      }
-  }
+//Add user image to the page and push this image to threeImg array  
+function addPicToPage(img) {
 
-  //Add user image to the page and push this image to threeImg array  
-  function addPicToPage(img){
-    
-    threeImg.push({id:imgId, img:img.target.result});
+    threeImg.push({ id: imgId, img: img.target.result });
     var $imgSquare = $('<div class="images"></div');
-    var $remove =$('<a class ="del_img btn btn-primary btn-circle btn-xl" data-id ="'+imgId+'"><i class="glyphicon glyphicon-remove"></i></a>')
-    var $image = $('<img>')
-      $image.attr('src', img.target.result)
-      .width(150)
-      .height(200);
-      $('#img-block').append($imgSquare.append($image).append($remove));
-      $imgSquare.hide().fadeIn("slow");
+    var $remove = $('<a class ="del_img_but del_img btn btn-primary btn-circle btn-xl" data-id ="' + imgId + '"><i class="glyphicon glyphicon-remove"></i></a>');
+    var $image = $('<img>');
+    $image.attr('src', img.target.result)
+        .width(200)
+        .height(200);
+    $('#img-block').append($imgSquare.append($image).append($remove));
+    $imgSquare.hide().fadeIn("slow");
 
     if (threeImg.length === 3) {
-      $('#picture-uploader').prop("disabled", true);
+        $('#picture-uploader').prop("disabled", true);
+        $('#getRecomendedMovies').prop("disabled", false);
+    } else {
+        $('#getRecomendedMovies').prop("disabled", true);
     }
     imgId++;
     //
-    $('.del_img').on("click",function(){
-      var id = $(this).data('id');
-      $(this).closest('.images').remove();
-      threeImg = threeImg.filter(function(element){
-        return element.id !== id;
-      })
-      $('#picture-uploader').prop("disabled", false);
-   
+    $('.del_img').on("click", function() {
+        var id = $(this).data('id');
+        $(this).closest('.images').remove();
+        threeImg = threeImg.filter(function(element) {
+            return element.id !== id;
+        })
+        $('#getRecomendedMovies').prop("disabled", true);
+        $('#picture-uploader').prop("disabled", false);
+    });
+};
 
-      for (var i = 0; threeImg.length > i; i++){
+
+//********************* Indico API functions ******************************
+
+function threeImgIndico() {
+    threeImg.forEach(function(image) {
         $.post(
-          'https://apiv2.indico.io/imagerecognition',
-          JSON.stringify({
-            'api_key': "7757e7fda1d6a89efbd1cc07880cc78f",
-            'data': "<IMAGE>",
-            'threshold': 0.01
-          })
-        ).then(keywordArray.push(Object.keys(response)[0]);
-      }
-      });
-  }
-  //Get user input from paragraph element
-  $('#submitParagraph').click(function(e){
-    e.preventDefault;
-    var $parElement = $('#paragraph');
-    paragraph = $parElement.val();
-    $parElement.prop("disabled", true);
-    $(this).prop("disabled", true);
-   
-    var indico = require('indico.io');
-        indico.apiKey =  '7757e7fda1d6a89efbd1cc07880cc78f';
+            'https://apiv2.indico.io/imagerecognition',
+            JSON.stringify({
+                'api_key': indicoAPIkey,
+                'data': image.img,
+                'threshold': 0.1
+            })
+        ).then(function(response) {
+            var resp = JSON.parse(response);
+            imagesKeywords.push(stuff.split(', ')[0]);
+            keywordArray.push(stuff.split(', ')[0]);
+            trigger--;
+        });
+    });
+}
 
-        var response = function(res) { console.log(res); }
-        var logError = function(err) { console.log(err); }
+function avatarIndico() {
+    $.post(
+        'https://apiv2.indico.io/fer',
+        JSON.stringify({
+            'api_key': indicoAPIkey,
+            'data': avatar,
+            'detect': true
+        })
+    ).then(function(response) {
+        var resp = JSON.parse(response);
+        facialKeywordObject = emotion;
+        genre = emoteGenre(emotion)
+        trigger--;
+    });
+}
 
+function paragraphIndico() {
+    $.post(
+        'https://apiv2.indico.io/keywords?version=2',
+        JSON.stringify({
+            'api_key': indicoAPIkey,
+            'data': paragraph,
+            'threshold': 0.1
+        })
+    ).then(function(response) {
+        var resp = JSON.parse(response);
+        paragraphKeywordObject = resp.results;
+        sortedParagraphKeywordArray = sortProperties(paragraphKeywordObject);
+        keywordArray.push(sortedParagraphKeywordArray[0][0]);
+        keywordArray.push(sortedParagraphKeywordArray[1][0]);
+        keywordArray.push(sortedParagraphKeywordArray[2][0]);
+        keywordArray.push(sortedParagraphKeywordArray[3][0]);
+        keywordArray.push(sortedParagraphKeywordArray[4][0]);
+        trigger--;
+    });
+}
 
-        var textBatchInput = [
-    "I did it. I got into Grad School. Not just any program, but a GREAT program. :-)",
-    "Like seriously my life is bleak, I have been unemployed for almost a year."
-        ];
-        indico.emotion(batchInput)
-          //pushes all keywords to keyword array
-          .then(keywordArray.push(Object.keys(response)))
-          .catch(logError);
+function sortProperties(obj)
+{
+  // convert object into array
+  var sortable=[];
+  for(var key in obj)
+    if(obj.hasOwnProperty(key))
+      sortable.push([key, obj[key]]); // each item is an array in format [key, value]
+  
+  // sort items by value
+  sortable.sort(function(a, b)
+  {
+    return b[1]-a[1]; // compare numbers
+  });
+  return sortable; // array in format [ [ key1, val1 ], [ key2, val2 ], ... ]
+}
 
-  });90
+function getHighestKey(response) {
+    var highestKey = "";
+    var highestKeyValue = 0;
+    for (var key in response) {
+        if (highestKeyValue < response[key]) {
+            highestKey = key;
+            highestKeyValue = response[key];
+        }
+    }
+    return highestKey;
+}
 
-$("#getMovies").click(function(){
-  textbatchInput.push(paragraph);
-  imagebatchInput.push(threeImg);
-  webcamBatchInput.push(avatar);
-})
+/* --------------------------The MovieDB Functions ------------*/
 
-
-//console.log(textbatchInput);
-//console.log(imagebatchInput);
-//console.log(webcamBatchInput);
-
-
-
-
- /*  -----------------------TheMovieDB Code Here------------------------------*/
-//https://api.themoviedb.org/3/movie/76341?api_key={4eea97057056c04b2e278ac4baa59a43}
-//var list
-//Create Genre Array
-var genreArray = [{ "id": 28, "name": "Action"}, { "id": 12, "name": "Adventure"}, {"id": 16,"name": "Animation"}, {"id": 35, "name": "Comedy"},{"id": 80,"name": "Crime"},{"id": 99,"name": "Documentary"},{"id": 18, "name": "Drama"},{"id": 10751,"name": "Family"},{"id": 14,"name": "Fantasy"},{"id": 36,"name": "History"},{"id": 27,"name": "Horror"},{"id": 10402,"name": "Music"},{"id": 9648,"name": "Mystery"},{"id": 10749,"name": "Romance"},{"id": 878,"name": "Science Fiction"},{"id": 10770,"name": "TV Movie"},{"id": 53,"name": "Thriller"},{"id": 10752,"name": "War"},{"id": 37,"name": "Western"}]
-var movieArray = [];
-var searchingMovieArray = [];
-var keywordArray = ["Basketball", "Dog", "cats"]
-
-genre = genre.toLowerCase();
-var genreId = 0;
-
-//func list
-//Look into error later
-
-
-//Look into Success > Complete Ajax commands
-
-//Add genre to search query
 function genreFinder(){
   genreArray.forEach(function(nameG){
     if (genre === nameG.name.toLowerCase()){
@@ -218,13 +233,11 @@ function genreFinder(){
     }
   })
 };
-genreFinder();
 
-//Find keywords Id numbers
 function idKeyword(){
   var keywordURL;
   var settings;
-
+  genreFinder();
   for (var i=0; i < keywordArray.length; i++){
       keywordURL = "https://api.themoviedb.org/3/search/keyword?api_key=4eea97057056c04b2e278ac4baa59a43&query=" + keywordArray[i] + "&page=1"
       settings = {
@@ -238,40 +251,58 @@ function idKeyword(){
 
       $.ajax(settings).done(function (response) {
         //pull first keyword id number from array
-        var thisKeywordId = response.results[0].id;
-        var movieIdURL;
-        var settings;
+        if (response.results[0] !== undefined) {
+          keywordIdArray.push(response.results[0].id);
+          var thisKeywordId = response.results[0].id;
+          var movieIdURL;
+          var settings;
 
-        //search for movies with proper keyword and genre
-        movieIdURL = "https://api.themoviedb.org/3/discover/movie?api_key=4eea97057056c04b2e278ac4baa59a43&language=en-US&sort_by=popularity.desc&page=1&vote_average.gte=6.5&with_genres=" + genreId + "&with_keywords=" + thisKeywordId
-          
-          settings = {
-            "url": movieIdURL,
+          //search for movies with proper keyword and genre
+          movieIdURL = "https://api.themoviedb.org/3/discover/movie?api_key=4eea97057056c04b2e278ac4baa59a43&language=en-US&sort_by=popularity.desc&page=1&vote_average.gte=6.5&with_genres=" + genreId + "&with_keywords=" + thisKeywordId
+            
+            settings = {
+              "url": movieIdURL,
+            }
+            //Pulls films from each query and push their JSON Data to a new array
+            $.ajax(settings).done(function (response) {
+              console.log(response);
+              if (response.total_results > 4){
+                movieGetter(response.results[0].id);
+                movieGetter(response.results[1].id);
+                movieGetter(response.results[2].id);
+                movieGetter(response.results[3].id);
+                movieGetter(response.results[4].id);
+              }
+              else if (response.total_results > 3){
+                movieGetter(response.results[0].id);
+                movieGetter(response.results[1].id);
+                movieGetter(response.results[2].id);
+                movieGetter(response.results[3].id);
+              }
+              else if (response.total_results > 2){
+                movieGetter(response.results[0].id);
+                movieGetter(response.results[1].id);
+                movieGetter(response.results[2].id);
+              }
+              else if (response.total_results > 1){
+                movieGetter(response.results[0].id);
+                movieGetter(response.results[1].id);
+              }
+              else if (response.total_results > 0){
+                movieGetter(response.results[0].id);
+              }
+              else{}
+            });
           }
-          //Pull films from each query and push their Ids to a new array
-          $.ajax(settings).done(function (response) {
-            console.log(response);
-            if (response.total_results > 2){
-              movieArray.push(response.results[0].id);
-              movieArray.push(response.results[1].id);
-              movieArray.push(response.results[2].id);
-            }
-            else if (response.total_results > 1){
-              movieArray.push(response.results[0].id);
-              movieArray.push(response.results[1].id);
-            }
-            else if (response.total_results > 0){
-              movieArray.push(response.results[0].id);
-            }
-            else{}
-          });
-        });
-      };
+        else {
+          return
+        }
+      });
+    };
     movieShuffle();
-    movieGetter();
   }
-//Search for each ID
-idKeyword();
+
+
 
 var testArray = movieArray;
 function movieShuffle(){
@@ -286,44 +317,66 @@ function movieShuffle(){
   }
 }
 
+//Pushes the JSON data of a movie to the movieObjectArray
+function movieGetter(thisID){
+  var movieURL = "https://api.themoviedb.org/3/movie/" + thisID + "?api_key=4eea97057056c04b2e278ac4baa59a43&language=en-US"
+  var settings;
 
+  settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": movieURL,
+  "method": "GET",
+  "headers": {},
+  "data": "{}", 
+  }
 
-function movieGetter(){
-  for (var i = 0; i < movieArray.length; i++)
-    var movieURL = "https://api.themoviedb.org/3/movie/" + movieArray[i] + "?api_key=4eea97057056c04b2e278ac4baa59a43&language=en-US"
-    var settings;
-
-    settings = {
-    "async": true,
-    "crossDomain": true,
-    "url": movieURL,
-    "method": "GET",
-    "headers": {},
-    "data": "{}", 
-    }
-
-    $.ajax(settings).done(function (response){
-      var thisPosterURL = "https://image.tmdb.org/t/p/w1280" + response.belongs_to_collection.poster_path;
-      var thisName = response.title;
-      var thisReleaseDate = response.release_date;
-      var thisRuntime = response.runtime;
-      var thisOverview = response.overview;
-      var thisIMDBId = reponse.imdb_id;
-
-      //Take data and push it to HTML and Firebase
-
-      //We can search the OMDB database as well if we want more details
-    });
-
-}
+  $.ajax(settings).done(function (response){
+    movieObjectArray.push(response);
+  });
   
+}
+
+$('#getRecomendedMovies').on('click', function() {
+    paragraph = $('#paragraph').val();
+    threeImgIndico();
+    avatarIndico();
+    paragraphIndico();
+
+    var timer = setInterval(checkIndico, 500);
+
+
+    function checkIndico() {
+        if (trigger === 0) {
+            clearInterval(timer);
+            idKeyword(); 
+          /*       
+            console.log("imagesKeywords: ", imagesKeywords);
+            console.log("****************************************************");
+            console.log("facialKeywordObject: ");
+            console.log(facialKeywordObject);
+            console.log("****************************************************");
+            console.log("paragraphKeywordObject: ");
+            console.log(paragraphKeywordObject);
+            console.log(sortedParagraphKeywordArray);
+          */
+            // ALL INDICO QUERIES DONE. CAN START QUERING MOVIES API
+        }
+    }
+});
 
 
 
 
+//https://api.themoviedb.org/3/movie/76341?api_key={4eea97057056c04b2e278ac4baa59a43}
 
 
+//Add genre to search query
 
+
+//Find keywords Id numbers
+
+//Search for each ID
 
 
 

@@ -196,6 +196,7 @@ body {
     -webkit-border-radius: 10px 10px 10px 10px;
     padding: 5px 10px 5px 5px;
     width: 270px;
+    height: 300px;
     float: left;
 }
 
@@ -248,7 +249,7 @@ body {
 #swiper-field {
     padding: 15px;
     display: none;
-    height: 600px;
+    height: 800px;
     color: white;
     text-align: center;
 }
@@ -264,10 +265,14 @@ body {
     border-radius: 10px 10px 10px 10px;
     -moz-border-radius: 10px 10px 10px 10px;
     -webkit-border-radius: 10px 10px 10px 10px;
-    background-color: rgba(179, 179, 179, 0.6);
+    background-color: rgba(0, 0, 0, 0.6);
     padding: 15px;
 }
 
 #home {
     margin-right: 40px;
+}
+
+.save-movie {
+    font-size: 20px;
 }

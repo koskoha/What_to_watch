@@ -326,7 +326,7 @@ function movieGetter(thisID) {
     }
 
     $.ajax(settings).done(function(response) {
-        movieObjectArray.push(response);
+        // movieObjectArray.push(response);
         showSuggestions(response);
     });
 
@@ -344,6 +344,8 @@ $('#getRecomendedMovies').on('click', function() {
     function checkIndico() {
         if (trigger === 0) {
             clearInterval(timer);
+            idKeyword();
+
             console.log("paragraphKeyword: ", paragraphKeyword);
             console.log("imagesKeywords: ", imagesKeywords);
             console.log('avatarIndico: ', facialKeyword);
@@ -353,7 +355,6 @@ $('#getRecomendedMovies').on('click', function() {
             console.log("****************************************************");
             console.log("paragraphKeywordObject: ");
             console.log(paragraphKeywordObject);
-            idKeyword();
 
         }
     }

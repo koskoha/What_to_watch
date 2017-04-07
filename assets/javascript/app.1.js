@@ -5,7 +5,7 @@
 var threeImg = [];
 /*User photo from web cam.
  *******In order to get user photo need to start page on server. 
- ********(Have no idea why browser doesn't want to give access to web-cam if you start index page localy)*/
+ ********(Have no idea why browser doesn't want to give access to web-cam if you start index page locally)*/
 var avatar;
 
 // paragraph describing either user life, day, or current mood.
@@ -28,10 +28,10 @@ var paragraphKeywordObject;
 
 var indicoAPIkey = "7757e7fda1d6a89efbd1cc07880cc78f";
 
-// referense to DB
+// reference to DB
 
 
-// Get image fron user 
+// Get image from user 
 
 $('#getRecomendedMovies').prop("disabled", true);
 
@@ -69,11 +69,11 @@ function addPicToPage(img) {
         $(this).closest('.images').remove();
         threeImg = threeImg.filter(function(element) {
             return element.id !== id;
-        })
+        });
         $('#getRecomendedMovies').prop("disabled", true);
         $('#picture-uploader').prop("disabled", false);
     });
-};
+}
 
 
 //********************* Indico API functions ******************************
@@ -167,6 +167,6 @@ $('#getRecomendedMovies').on('click', function() {
             // ALL INDICO QUERIES DONE. CAN START QUERING MOVIES API
         }
     }
-})
+});
 
 // Some call it the sunshine state. i love sand and blue sky. and this ocean air.

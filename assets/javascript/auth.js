@@ -1,5 +1,4 @@
  // Initialize Firebase
- // Initialize Firebase
  var config = {
      apiKey: "AIzaSyA_fu2UaPSlieTOLsBfHF0RnqUYrJVS1WE",
      authDomain: "what-to-watch-db8c3.firebaseapp.com",
@@ -9,16 +8,33 @@
  };
  firebase.initializeApp(config);
 
+ // Registration password matcher
+ $('#pwdError').hide();
+ $('#reenterpwd').keyup(function(e) {
+     e.preventDefault();
+     var password = $('#pwdR').val();
+     var reenterPwd = $('#reenterpwd').val();
+     if (password !== reenterPwd) {
+         $('#pwdError').show();
+     } else {
+         $('#pwdError').hide();
+     }
 
+ });
 
+ // Login button event listener
  $('#login').click(signInWithEmailAndPassword);
- $('#register').on("click", createAccaunt);
+ // Register button event listener
+ $('#register').on("click", createAccount);
 
- function createAccaunt(event) {
+ // Function which pull user data from login form inputs and create an account.
+ //  Save user data to firebase.
+ function createAccount(event) {
      event.preventDefault();
      var displayName = $('#userName').val();
      var email = $('#emailR').val();
      var password = $('#pwdR').val();
+     var reenterPwd = $('#reenterpwd').val();
 
      firebase.auth().createUserWithEmailAndPassword(email, password)
          .then(function(user) {
@@ -27,9 +43,10 @@
          })
          .catch(function(error) {
              console.log('register error', error);
-         })
+         });
  }
 
+ // Pull user data from firebase on login button click
  function signInWithEmailAndPassword(event) {
      event.preventDefault();
      var email = $('#email').val();
@@ -41,8 +58,11 @@
 
  }
 
+ // firebase event listener for user status changes
  firebase.auth().onAuthStateChanged(authStateChangeListener);
 
+ // Function which enable user links and show used data if user login
+ // Hide user data if user logOut
  function authStateChangeListener(user) {
      //signin
      if (user) {
@@ -65,6 +85,8 @@
      }
  }
 
+ // Logout link event listener
+ // login out user from database if logout link clicked
  $("#logout-link").on("click", function() {
      firebase.auth().signOut()
          .catch(function(err) {

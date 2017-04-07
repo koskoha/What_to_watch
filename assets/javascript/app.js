@@ -25,39 +25,6 @@ var facialKeywordObject;
 //paragraph emonions keyword 
 var paragraphKeyword;
 var paragraphKeywordObject;
-
-var indicoAPIkey = "7757e7fda1d6a89efbd1cc07880cc78f";
-
-// referense to DB
-
-
-// Get image fron user 
-
-// All necessary data for working with Indico API.
-// three images of user favorite things
-var threeImg = [];
-/*User photo from web cam.
- *******In order to get user photo need to start page on server. 
- ********(Have no idea why browser doesn't want to give access to web-cam if you start index page localy)*/
-var avatar;
-
-// paragraph describing either user life, day, or current mood.
-var paragraph;
-
-var imgId = 0;
-
-var trigger = 5;
-
-// key words from image recognition
-var imagesKeywords = [];
-
-// Facial Emotion Recognition variable
-var facialKeyword;
-var facialKeywordObject;
-
-//paragraph emonions keyword 
-var paragraphKeyword;
-var paragraphKeywordObject;
 var sortedParagraphKeywordArray;
 
 var indicoAPIkey = "7757e7fda1d6a89efbd1cc07880cc78f";
@@ -128,7 +95,6 @@ function emoteGenre(input) {
 
 // Get image fron user 
 
->>>>>>> ebab0a2254a237e3b3d18743138ce1cd15a36151
 $('#getRecomendedMovies').prop("disabled", true);
 
 function getImage(input) {
@@ -160,9 +126,7 @@ function addPicToPage(img) {
     }
     imgId++;
     //
-
     $('.del_img_but').on("click", function() {
-
         var id = $(this).data('id');
         $(this).closest('.images').remove();
         threeImg = threeImg.filter(function(element) {
@@ -172,44 +136,6 @@ function addPicToPage(img) {
         $('#picture-uploader').prop("disabled", false);
     });
 };
-
-
-//********************* Indico API functions ******************************
-
-function threeImgIndico() {
-    threeImg.forEach(function(image) {
-        $.post(
-            'https://apiv2.indico.io/imagerecognition',
-            JSON.stringify({
-                'api_key': indicoAPIkey,
-                'data': image.img,
-                'threshold': 0.1
-            })
-        ).then(function(response) {
-            var resp = JSON.parse(response);
-            var stuff = getHighestKey(resp.results);
-            // console.log("stuff", stuff);
-            imagesKeywords.push(stuff.split(', ')[0]);
-            trigger--;
-        });
-    });
-}
-
-function avatarIndico() {
-    $.post(
-        'https://apiv2.indico.io/fer',
-        JSON.stringify({
-            'api_key': indicoAPIkey,
-            'data': avatar,
-            'detect': true
-        })
-    ).then(function(response) {
-        var resp = JSON.parse(response);
-        // console.log("avatar obj: ", resp)
-        var emotion = resp.results["0"].emotions;
-        facialKeyword = getHighestKey(emotion);
-        facialKeywordObject = emotion;
-        trigger--;
 
 
 //********************* Indico API functions ******************************
@@ -403,6 +329,7 @@ function movieGetter(thisID) {
         movieObjectArray.push(response);
         showSuggestions(response);
     });
+
 }
 
 $('#getRecomendedMovies').on('click', function() {
@@ -440,59 +367,7 @@ $('#getRecomendedMovies').on('click', function() {
 
 //Add genre to search query
 
-function paragraphIndico() {
-    $.post(
-        'https://apiv2.indico.io/emotion',
-        JSON.stringify({
-            'api_key': indicoAPIkey,
-            'data': paragraph,
-            'threshold': 0.1
-        })
-    ).then(function(response) {
-        var resp = JSON.parse(response);
-        paragraphKeyword = getHighestKey(resp.results);
-        paragraphKeywordObject = resp.results;
-        trigger--;
-    });
-}
 
-function getHighestKey(response) {
-    var highestKey = "";
-    var highestKeyValue = 0;
-    for (var key in response) {
-        if (highestKeyValue < response[key]) {
-            highestKey = key;
-            highestKeyValue = response[key];
-        }
-    }
-    return highestKey;
-}
-
-$('#getRecomendedMovies').on('click', function() {
-    paragraph = $('#paragraph').val();
-    threeImgIndico();
-    avatarIndico();
-    paragraphIndico();
-
-    var timer = setInterval(checkIndico, 500);
-
-
-    function checkIndico() {
-        if (trigger === 0) {
-            clearInterval(timer);
-            console.log("paragraphKeyword: ", paragraphKeyword);
-            console.log("imagesKeywords: ", imagesKeywords);
-            console.log('avatarIndico: ', facialKeyword);
-            console.log("****************************************************");
-            console.log("facialKeywordObject: ");
-            console.log(facialKeywordObject);
-            console.log("****************************************************");
-            console.log("paragraphKeywordObject: ");
-            console.log(paragraphKeywordObject);
-            // ALL INDICO QUERIES DONE. CAN START QUERING MOVIES API
-        }
-    }
-})
 //Find keywords Id numbers
 
 //Search for each ID

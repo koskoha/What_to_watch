@@ -13,11 +13,7 @@
 </head>
 
 <body>
-
-    <button id="addToDB">Add to DB</button>
-    <button id="sugestions">See sugestions</button>
-
-    <!-- Our code goes here!!! -->
+    <!--Navigation baar-->
     <div class="container">
         <div class="row">
             <div class="col-md-12 fieldStyle nav-field">
@@ -30,7 +26,7 @@
                         <span class="glyphicon glyphicon-film"></span> My watch list
                     </a>
                     <a id="login-link" data-toggle="modal" data-target=".bs-modal-sm">
-                        <span class="glyphicon glyphicon-log-in"></span> Login
+                        <span class="glyphicon glyphicon-log-in"></span> Login/Register
                     </a>
                     <a id="logout-link">
                         <span class="glyphicon glyphicon-log-out"></span> Log out
@@ -118,6 +114,7 @@
                                                 <div class="control-group">
                                                     <label class="control-label" for="reenterpwd">Re-Enter Password:</label>
                                                     <div class="controls">
+                                                        <p id="pwdError" style="color:red">passwords doesn't match!</p>
                                                         <input id="reenterpwd" class="form-control" name="reenterpassword" type="password" placeholder="********" class="input-large" required="">
                                                     </div>
                                                 </div>

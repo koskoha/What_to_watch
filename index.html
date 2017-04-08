@@ -179,8 +179,8 @@
     <!-- Main block  -->
     <div class="container text-center" id="main">
         <div class="row" id="user-avatar">
-            <div class="col-md-12 fieldStyle">
-                <label for="yourMood">Take you photo:</label>
+            <div class="col-md-12 fieldStyle" id="camera-section">
+                <label for="yourMood">How do you want to react to  <br> your movie? Be Expressive!</label>
                 <!-- Capturin photo from web cam -->
                 <div class="avatar-block">
                     <div class="camera">
@@ -199,8 +199,8 @@
         </div>
 
         <div class="row" id="user-pictures">
-            <div class="col-md-12 fieldStyle">
-                <label for="yourMood">Upload three pictures of your favorite things:</label>
+            <div class="col-md-12 fieldStyle" id="img-leather">
+                <label for="yourMood">Upload three pictures of your hobbies/interests:</label>
                 <input type='file' id="picture-uploader" onchange="getImage(this);">
                 <div id="img-block">
                     <!-- User images -->
@@ -209,8 +209,8 @@
         </div>
 
         <div class="row" id="user-paragraph">
-            <div class="col-md-12 fieldStyle">
-                <label for="yourMood">Type a paragraph describing either your life, day, or current mood: </label>
+            <div class="col-md-12 fieldStyle" id="text-leather">
+                <label for="yourMood">Type some keyword about what you want to see (pick at least 5 words): </label>
                 <textarea class="form-control" rows="7" id="paragraph"></textarea>
             </div>
         </div>

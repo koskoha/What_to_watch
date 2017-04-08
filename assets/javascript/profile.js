@@ -1,6 +1,6 @@
 var database = firebase.database();
 
-//on click rolling down/up list of saved movies. 
+//on click rolling down/up list of saved movies.
 // Running function for adding movies to list.
 $('#favorite').click(function() {
     var favField = $('#fav-field');
@@ -20,7 +20,7 @@ function showSuggestions(movie) {
     var swiper = $('#swiper-wrapper-top');
     console.log(movie);
     var slide = $('<div class="swiper-slide" ></div>');
-    var slideBottom = $('<div class="swiper-slide" ></div>');
+    var slideBottom = $('<div class="bottom-slide" ></div>');
     var greyBackground = $('<div id="movieBackground"></div>');
     slide.css('background-image', 'url(' + posterURL + movie.poster_path + ')');
     greyBackground.append("<h1>" + movie.original_title + "</h1>");

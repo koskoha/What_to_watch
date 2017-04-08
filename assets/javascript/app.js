@@ -96,7 +96,7 @@ function emoteGenre(input) {
 
 $('#getRecomendedMovies').prop("disabled", true);
 
-// Get image from user 
+// Get image from user
 function getImage(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
@@ -105,15 +105,15 @@ function getImage(input) {
     }
 }
 
-//Add user image to the page and push this image to threeImg array  
+//Add user image to the page and push this image to threeImg array
 function addPicToPage(img) {
 
     threeImg.push({ id: imgId, img: img.target.result });
     var $imgSquare = $('<div class="images"></div');
     var $remove = $('<a class ="del_img_but del_img btn btn-primary btn-circle btn-xl" data-id ="' + imgId + '"><i class="glyphicon glyphicon-remove"></i></a>');
-    var $image = $('<img>');
+    var $image = $("<img class ='item-image'>");
     $image.attr('src', img.target.result)
-        .width(200)
+        .width("auto")
         .height(200);
     $('#img-block').append($imgSquare.append($image).append($remove));
     $imgSquare.hide().fadeIn("slow");
@@ -264,7 +264,7 @@ function idKeyword() {
                 var settings;
 
                 //search for movies with proper keyword and genre
-                movieIdURL = "https://api.themoviedb.org/3/discover/movie?api_key=4eea97057056c04b2e278ac4baa59a43&language=en-US&sort_by=popularity.desc&page=1&vote_average.gte=6.5&with_genres=" + genreId + "&with_keywords=" + thisKeywordId;
+                movieIdURL = "https://api.themoviedb.org/3/discover/movie?api_key=4eea97057056c04b2e278ac4baa59a43&language=en-US&sort_by=popularity.desc&page=1&with_genres=" + genreId + "&with_keywords=" + thisKeywordId;
 
                 settings = {
                     "url": movieIdURL,
@@ -333,13 +333,13 @@ function movieGetter(thisID) {
     };
 
     $.ajax(settings).done(function(response) {
-        // movieObjectArray.push(response);
+        movieObjectArray.push(response);
         showSuggestions(response);
     });
 
 }
 
-//Start process getting recomended movies 
+//Start process getting recomended movies
 $('#getRecomendedMovies').on('click', function() {
     paragraph = $('#paragraph').val();
     threeImgIndico();

@@ -8,6 +8,10 @@
     height: 220px;
 }
 
+#hiding{
+  display:none;
+}
+
 #photo {
     width: 300px;
     height: 220px;
